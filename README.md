@@ -1,1 +1,1 @@
-# framer-excersizes
+# framer-exercises
