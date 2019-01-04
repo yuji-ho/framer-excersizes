@@ -15,16 +15,16 @@ const handlePasswordError = () => {
   console.log("Wrong password");
 };
 
-export const PasswordOverride: Override = (props) => {
-    /** 
-     * Find the child that refers to the input element
-    */
-    props.children.map(child => {
-        console.log(child)
-        // console.log(child.element)
-    });
+export const PasswordOverride: Override = () => {
+    // /** 
+    //  * Find the child that refers to the input element
+    // */
+    // props.children.map(child => {
+    //     console.log(child)
+    //     // console.log(child.element)
+    // });
   return {
-    onChange: e => {
+    onChange() {
       console.log(e);
       data.password = e.target.value;
     }
@@ -40,6 +40,15 @@ export const ButtonOverride: Override = () => {
       } else {
         data.loggedIn = false;
         handlePasswordError();
+      }
+    }
+  };
+};
+
+export const DisableButtonOverride: Override = () => {
+  return {
+    onClick: () => {
+
       }
     }
   };

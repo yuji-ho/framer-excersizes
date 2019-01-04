@@ -3,41 +3,45 @@ import { Data, PropertyControls, ControlType } from "framer";
 import styled from "styled-components";
 
 const data = Data({
-  state: null,
   password: ""
 });
 
 const getBorderColor = props => {
-    console.log(props)
-    if (props.value.length == 0) {
-        return "#aaa"
-    } 
-    // if minimum value is greater than 0 AND entered password is less than 8, then make border color red.
-    if (props.minimumPasswordLength > 0 && props.value.length < props.minimumPasswordLength) {
-        return "#EE4444"
-    } else {
-        return "#aaa"
-    };
-}
+  if (props.value.length == 0) {
+    return "#aaa";
+  }
+  // if minimum value is greater than 0 AND entered password is less than 8, then make border color red.
+  if (
+    props.minimumPasswordLength > 0 &&
+    props.value.length < props.minimumPasswordLength
+  ) {
+    return "#EE4444";
+  } else {
+    return "#aaa";
+  }
+};
 
 const getBorderSize = props => {
-    console.log(props)
-    if (props.value.length == 0) {
-        return "1px solid #aaa"
-    } 
-    // if minimum value is greater than 0 AND entered password is less than 8, then make border color red.
-    if (props.minimumPasswordLength > 0 && props.value.length < props.minimumPasswordLength) {
-        return "2px solid #EE4444"
-    } else {
-        return "1px solid #aaa"
-    };
-}
+  if (props.value.length == 0) {
+    return "1px solid #aaa";
+  }
+  // if minimum value is greater than 0 AND entered password is less than 8, then make border color red.
+  if (
+    props.minimumPasswordLength > 0 &&
+    props.value.length < props.minimumPasswordLength
+  ) {
+    return "2px solid #EE4444";
+  } else {
+    return "1px solid #aaa";
+  }
+};
 
-const StyledHint = styled.div `
-    margin-top: 10px;
-    font-size: 14px;
-    color: ${getBorderColor};
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+const StyledHint = styled.div`
+  margin-top: 10px;
+  font-size: 14px;
+  color: ${getBorderColor};
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 `;
 
 export const InputContainer = styled.input`
@@ -59,12 +63,13 @@ export const InputContainer = styled.input`
   } */
 `;
 
-const StyledLabel = styled.label `
-    font-weight: 600;
-    font-size: 14px;
-    color: #777;
-    text-transform: uppercase;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+const StyledLabel = styled.label`
+  font-weight: 600;
+  font-size: 14px;
+  color: #777;
+  text-transform: uppercase;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 `;
 
 // Define type of property
@@ -78,10 +83,10 @@ export class Input extends React.Component<Props> {
     label: "Label",
     isPassword: false,
     placeholder: "Enter password",
-    minimumPasswordLength: 0    
+    minimumPasswordLength: 0
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     data.password = e.target.value;
   };
 
@@ -102,23 +107,42 @@ export class Input extends React.Component<Props> {
       title: "Placeholder"
     },
     minimumPasswordLength: {
-        type: ControlType.Number,
-        title: "Min Length"
+      type: ControlType.Number,
+      title: "Min Length"
     }
   };
 
   render() {
+    const {
+      handleChange,
+      label,
+      isPassword,
+      minimumPasswordLength,
+      password,
+      placeholder
+    } = this.props;
+
+    // Figure out what to render below
+    const labelEl = !!label ? <StyledLabel>{label}</StyledLabel> : "";
+    
     return (
       <div>
-        {!!this.props.label ? <StyledLabel>{this.props.label}</StyledLabel> : ""}
+        {labelEl}
         <InputContainer
-          onChange={this.handleChange}
-          type={this.props.isPassword ? "password" : "text"}
-          minimumPasswordLength={this.props.minimumPasswordLength}
-          value={data.password}
-          placeholder={this.props.placeholder}
+          onChange={handleChange || this.handleChange}
+          type={isPassword ? "password" : "text"}
+          minimumPasswordLength={minimumPasswordLength}
+          value={password || data.password}
+          placeholder={placeholder}
         />
-        {this.props.minimumPasswordLength > 0 ? <StyledHint value={data.password} minimumPasswordLength={this.props.minimumPasswordLength}>{`Password must be longer than ${this.props.minimumPasswordLength} characters`}</StyledHint> : ""}
+        {minimumPasswordLength > 0 ? (
+          <StyledHint
+            value={password || data.password}
+            minimumPasswordLength={minimumPasswordLength}
+          >{`Password must be longer than ${minimumPasswordLength} characters`}</StyledHint>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
